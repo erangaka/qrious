@@ -147,7 +147,7 @@
 
   - name: Wait for SSH port to become open before continue
     wait_for:
-      host: {{ qrious_webserver1_data.instances.public_ip }}
+      host: "{{ qrious_webserver1_data.instances.public_ip }}"
       port: 22
       delay: 30
       state: started
