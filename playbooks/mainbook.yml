@@ -37,8 +37,6 @@
   - set_fact:
       new_vpc_id: "{{ vpc_data.vpc.id }}"
 
-  - debug: msg="{{ vpc_data }}"
-
   - name: Create new subnet for qrious VPC
     ec2_vpc_subnet:
       aws_access_key: "{{ aws_access_key }}"
@@ -53,8 +51,6 @@
         Group: "{{ tag_value }}"
     register: subnet1_data
 
-  - debug: msg="{{ subnet1_data }}"
-
   - name: Create new internet gateway for qrious VPC
     ec2_vpc_igw:
       aws_access_key: "{{ aws_access_key }}"
@@ -66,8 +62,6 @@
         Name: qrious-igw1
         Group: "{{ tag_value }}"
     register: igw1_data
-
-  - debug: msg="{{ igw1_data }}"
 
   - name: Create new route table for public subnet internet gateway
     ec2_vpc_route_table:
@@ -84,8 +78,6 @@
         Name: qrious-igw1-pub-route
         Group: "{{ tag_value }}"
     register: pub_igw_route_data
-
-  - debug: msg="{{ pub_igw_route_data }}"
 
   - name: Create new security group for qrious webserver
     ec2_group:
@@ -109,8 +101,6 @@
         Group: "{{ tag_value }}"
     register: webser_sg1_data
 
-  - debug: msg="{{ webser_sg1_data }}"
-
   - name: Create new EC2 key-pair for login
     ec2_key:
       aws_access_key: "{{ aws_access_key }}"
@@ -118,8 +108,6 @@
       name: qrious-webserver-keypair
       region: "{{ aws_region }}"
     register: webser_keypair_data
-
-  - debug: msg="{{ webser_keypair_data }}"
 
   - name: Create a directory for store EC2 Private Key if it does not exist
     file:
@@ -147,8 +135,6 @@
       wait: yes
     register: qrious_webserver1_data
 
-  - debug: msg="{{ qrious_webserver1_data }}"
-
   - set_fact:
       new_ec2_ip: "{{ qrious_webserver1_data.instances[0].public_ip }}"
 
@@ -157,7 +143,7 @@
       hostname: "{{ new_ec2_ip }}"
       groupname: ec2webservers
 
-  - name: Wait for SSH port to become open before continue
+  - name: Check SSH port open for new EC2 instnace
     wait_for:
       host: "{{ new_ec2_ip }}"
       port: 22
@@ -165,6 +151,4 @@
       timeout: 120
     register: check_ssh_result
 
-  - debug: msg="{{ check_ssh_result }}"
-
-  - debug: msg="New webserver IP - {{ new_ec2_ip }}"
+  - debug: msg="New webserver created. IP - {{ new_ec2_ip }}"
