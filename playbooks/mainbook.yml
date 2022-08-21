@@ -149,7 +149,7 @@
 
   - debug: msg="{{ qrious_webserver1_data }}"
 
-  - debug: msg="{{ qrious_webserver1_data.instances.dns_name }}"
+  - debug: msg="{{ qrious_webserver1_data.instances[0].dns_name }}"
   # - name: Add new instance to host group
   #   add_host:
   #     hostname: "{{ item.public_ip }}"
