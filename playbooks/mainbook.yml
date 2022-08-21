@@ -151,13 +151,15 @@
 
   - name: Add new instance to host group
     add_host:
-      hostname: "{{ qrious_webserver1_data.instances.public_ip }}"
+      hostname: "{{ item.public_ip }}"
       groupname: ec2webservers
+    loop: "{{ qrious_webserver1_data.instances }}"
 
   - name: Wait for SSH port to become open before continue
+    delegate_to: "{{ qrious_webserver1_data.instances.public_ip }}"
     wait_for_connection:
-      delegate_to: "{{ qrious_webserver1_data.instances.public_ip }}"
       delay: 30
+      timeout: 300
     register: check_ssh_result
 
   - debug: msg="EC2 instance ready - IP {{ qrious_webserver1_data.instances.public_ip }}"
