@@ -1,0 +1,30 @@
+- name: Automated deploy EC2 webserver
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    instance_type: t2.micro
+    image: ami-090fa75af13c156b4
+    count: 1
+    tag_name: Group
+    tag_value: qrious-test
+
+  tasks:
+  - name: Install prerequisites libs and modules
+    pip:
+      name: boto3
+      state: present
+
+  - name: Create a new VPC for webserver
+    ec2_vpc_net:
+      name: qrious-vpc1
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      cidr_block: 10.10.0.0/16
+      region: "{{ region }}"
+      tenancy: default
+      state: present
+      tags:
+        "{{ tag_name }}": "{{ tag_value }}"
+    register: vpc_data
