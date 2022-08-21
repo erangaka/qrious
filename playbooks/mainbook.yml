@@ -117,15 +117,13 @@
       aws_secret_key: "{{ aws_secret_key }}"
       name: qrious-webserver-keypair
       region: "{{ aws_region }}"
-      tags:
-        Group: "{{ tag_value }}"
     register: webser_keypair_data
 
   - debug: msg="{{ webser_keypair_data }}"
 
   - name: Copy EC2 Private Key locally to SSH access
-    copy: content="{{webser_keypair_data.key.private_key }}" dest=/tmp/key.ppk
-    when: webser-keypair-data.changed == true
+    copy: content="{{webser_keypair_data.key.private_key }}" dest=qrious_webser1_key.pem
+    when: webser_keypair_data.changed == true
 
   - name: Create EC2 instance for webserver
     ec2_instance:
