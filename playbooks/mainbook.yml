@@ -7,7 +7,6 @@
     instance_type: t2.micro
     image: ami-090fa75af13c156b4
     count: 1
-    tag_name: Group
     tag_value: qrious-test
 
   tasks:
@@ -22,7 +21,7 @@
 
   - debug: msg="{{ check_install.stdout_lines }}"
 
-  - name: Create a new VPC for webserver
+  - name: Create new VPC for webserver
     ec2_vpc_net:
       name: qrious-vpc1
       aws_access_key: "{{ aws_access_key }}"
@@ -32,7 +31,36 @@
       tenancy: default
       state: present
       tags:
-        "{{ tag_name }}": "{{ tag_value }}"
+        Group: "{{ tag_value }}"
     register: vpc_data
 
-  - debug: msg="{{ vpc_data.stdout_lines }}"
+  - set_fact:
+      new_vpc_id: "{{ vpc_data.vpc.id }}"
+
+  - debug: msg="{{ vpc_data }}"
+
+  - name: Create new subnet for qrious VPC
+    ec2_vpc_subnet:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      vpc_id: "{{ new_vpc_id }}"
+      region: "{{ aws_region }}"
+      state: present
+      cidr: 10.10.1.0/24
+      map_public: yes
+      tags:
+        Name: qrious-subnet1-pub
+    register: subnet1_data
+
+  - debug: msg="{{ vpc_data }}"
+
+  - name: Create new internet gateway for qrious VPC
+    ec2_vpc_igw:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      vpc_id: "{{ new_vpc_id }}"
+      region: "{{ aws_region }}"
+      state: "present"
+      tags:
+        Name: qrious-igw1
+    register: igw1_date
