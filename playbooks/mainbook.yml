@@ -6,7 +6,7 @@
   vars:
     instance_type: t2.micro
     host_image: ami-090fa75af13c156b4
-    count: 1
+    host_count: 1
     tag_value: qrious-test
 
   tasks:
@@ -138,7 +138,7 @@
       tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
-      exact_count: 1
+      exact_count: "{{ host_count }}"
       wait: yes
     register: qrious_webserver1_data
 
