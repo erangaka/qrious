@@ -138,7 +138,9 @@
       instance_tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
-      count: "{{ host_count }}"
+      count_tag:
+        Name: qrious-webserver1
+      exact_count: "{{ host_count }}"
     register: qrious_webserver1_data
 
   - debug: msg="{{ qrious_webserver1_data }}"
