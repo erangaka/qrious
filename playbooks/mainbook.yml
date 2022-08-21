@@ -158,12 +158,13 @@
       groupname: ec2webservers
 
   - name: Wait for SSH port to become open before continue
-    delegate_to: "{{ new_ec2_ip }}"
-    wait_for_connection:
+    wait_for:
+      host: "{{ new_ec2_ip }}"
+      port: 22
       delay: 10
-      timeout: 300
+      timeout: 120
     register: check_ssh_result
 
-  - debug: msg="{{ check_ssh_result }}"  
+  - debug: msg="{{ check_ssh_result }}"
 
   - debug: msg="New webserver IP - {{ new_ec2_ip }}"
