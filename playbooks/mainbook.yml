@@ -123,8 +123,8 @@
 
   - debug: msg="{{ webser_keypair_data }}"
 
-  - name: Copy EC2 Private Key locally so it can be later on used to SSH into the instance
-    copy: content="{{ webser-keypair-data.key.private_key }}" dest=/tmp/key.ppk
+  - name: Copy EC2 Private Key locally to SSH access
+    copy: content="{{webser_keypair_data.key.private_key }}" dest=/tmp/key.ppk
     when: webser-keypair-data.changed == true
 
   - name: Create EC2 instance for webserver
