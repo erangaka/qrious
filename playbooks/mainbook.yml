@@ -67,7 +67,7 @@
         Group: "{{ tag_value }}"
     register: igw1_data
 
-  - debug: msg="{{ igw1_date }}"
+  - debug: msg="{{ igw1_data }}"
 
   - name: Create new route for public subnet internet gateway
     ec2_vpc_route_table:
@@ -109,6 +109,8 @@
         Group: "{{ tag_value }}"
     register: webser-sg1-data
 
+  - debug: msg="{{ webser-sg1-data }}"
+
   - name: Create new EC2 key-pair for login
     ec2_key:
       aws_access_key: "{{ aws_access_key }}"
@@ -118,6 +120,8 @@
       tags:
         Group: "{{ tag_value }}"
     register: webser-keypair-data
+
+  - debug: msg="{{ webser-keypair-data }}"
 
   - name: Copy EC2 Private Key locally so it can be later on used to SSH into the instance
     copy: content="{{ webser-keypair-data.key.private_key }}" dest=/tmp/key.ppk
@@ -138,3 +142,6 @@
         Group: "{{ tag_value }}"
       exact_count: 1
       wait: yes
+    register: qrious-webserver1-data
+
+  - debug: msg="{{ qrious-webserver1-data }}"
