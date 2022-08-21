@@ -143,8 +143,6 @@
       instance_tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
-      count_tag:
-        Name: qrious-webserver1
       count: "{{ host_count }}"
       wait: yes
       state: running
