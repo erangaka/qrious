@@ -138,8 +138,7 @@
       tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
-      exact_count: "{{ host_count }}"
-      wait: yes
+      count: "{{ host_count }}"
     register: qrious_webserver1_data
 
   - debug: msg="{{ qrious_webserver1_data }}"
