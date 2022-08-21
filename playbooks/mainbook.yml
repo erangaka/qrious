@@ -12,9 +12,15 @@
 
   tasks:
   - name: Install prerequisites libs and modules
+    become: yes
     pip:
-      name: boto3
+      name:
+        - boto3
+        - boto
       state: present
+    register: check_install
+
+  - debug: msg="{{ check_install.stdout_lines }}"
 
   - name: Create a new VPC for webserver
     ec2_vpc_net:
@@ -22,9 +28,11 @@
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       cidr_block: 10.10.0.0/16
-      region: "{{ region }}"
+      region: "{{ aws_region }}"
       tenancy: default
       state: present
       tags:
         "{{ tag_name }}": "{{ tag_value }}"
     register: vpc_data
+
+  - debug: msg="{{ vpc_data.stdout_lines }}"
