@@ -69,7 +69,7 @@
 
   - debug: msg="{{ igw1_data }}"
 
-  - name: Create new route for public subnet internet gateway
+  - name: Create new route table for public subnet internet gateway
     ec2_vpc_route_table:
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
@@ -83,9 +83,9 @@
       tags:
         Name: qrious-igw1-pub-route
         Group: "{{ tag_value }}"
-    register: pub-igw-route-data
+    register: pub_igw_route_data
 
-  - debug: msg="{{ pub-igw-route-data }}"
+  - debug: msg="{{ pub_igw_route_data }}"
 
   - name: Create new security group for qrious webserver
     ec2_group:
@@ -107,9 +107,9 @@
           cidr_ip: 0.0.0.0/0
       tags:
         Group: "{{ tag_value }}"
-    register: webser-sg1-data
+    register: webser_sg1_data
 
-  - debug: msg="{{ webser-sg1-data }}"
+  - debug: msg="{{ webser_sg1_data }}"
 
   - name: Create new EC2 key-pair for login
     ec2_key:
@@ -119,9 +119,9 @@
       region: "{{ aws_region }}"
       tags:
         Group: "{{ tag_value }}"
-    register: webser-keypair-data
+    register: webser_keypair_data
 
-  - debug: msg="{{ webser-keypair-data }}"
+  - debug: msg="{{ webser_keypair_data }}"
 
   - name: Copy EC2 Private Key locally so it can be later on used to SSH into the instance
     copy: content="{{ webser-keypair-data.key.private_key }}" dest=/tmp/key.ppk
@@ -134,14 +134,14 @@
       image_id: "{{ host_image }}"
       instance_type: "{{ instance_type }}"
       region: "{{ aws_region }}"
-      security_group: "{{ webser-sg1-data.group_id }}"
+      security_group: "{{ webser_sg1_data.group_id }}"
       vpc_subnet_id: "{{ subnet1_data.subnet.id }}"
-      key_name: "{{ webser-keypair-data.key.name }}"
+      key_name: "{{ webser_keypair_data.key.name }}"
       tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
       exact_count: 1
       wait: yes
-    register: qrious-webserver1-data
+    register: qrious_webserver1_data
 
-  - debug: msg="{{ qrious-webserver1-data }}"
+  - debug: msg="{{ qrious_webserver1_data }}"
