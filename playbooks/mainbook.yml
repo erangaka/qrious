@@ -146,6 +146,7 @@
       count_tag:
         Name: qrious-webserver1
       exact_count: "{{ host_count }}"
+      state: running
     register: qrious_webserver1_data
 
   - debug: msg="{{ qrious_webserver1_data }}"
