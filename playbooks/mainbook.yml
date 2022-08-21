@@ -149,7 +149,7 @@
 
   - debug: msg="{{ qrious_webserver1_data }}"
 
-  - debug: msg="{{ qrious_webserver1_data.instances[0].public_ip }}"
+  - debug: msg="New EC2 isntance IP - {{ qrious_webserver1_data.instances[0].public_ip }}"
   # - name: Add new instance to host group
   #   add_host:
   #     hostname: "{{ item.public_ip }}"
