@@ -52,7 +52,7 @@
         Name: qrious-subnet1-pub
     register: subnet1_data
 
-  - debug: msg="{{ vpc_data }}"
+  - debug: msg="{{ subnet1_data }}"
 
   - name: Create new internet gateway for qrious VPC
     ec2_vpc_igw:
@@ -64,3 +64,5 @@
       tags:
         Name: qrious-igw1
     register: igw1_date
+
+  - debug: msg="{{ igw1_date }}"
