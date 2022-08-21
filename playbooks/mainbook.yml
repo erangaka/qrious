@@ -5,7 +5,7 @@
 
   vars:
     instance_type: t2.micro
-    image: ami-090fa75af13c156b4
+    host_image: ami-090fa75af13c156b4
     count: 1
     tag_value: qrious-test
 
@@ -50,6 +50,7 @@
       map_public: yes
       tags:
         Name: qrious-subnet1-pub
+        Group: "{{ tag_value }}"
     register: subnet1_data
 
   - debug: msg="{{ subnet1_data }}"
@@ -63,6 +64,77 @@
       state: "present"
       tags:
         Name: qrious-igw1
-    register: igw1_date
+        Group: "{{ tag_value }}"
+    register: igw1_data
 
   - debug: msg="{{ igw1_date }}"
+
+  - name: Create new route for public subnet internet gateway
+    ec2_vpc_route_table:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      vpc_id: "{{ new_vpc_id }}"
+      region: "{{ aws_region }}"
+      subnets:
+        - "{{ subnet1_data.subnet.id }}"
+      routes:
+        - dest: 0.0.0.0/0
+          gateway_id: "{{ igw1_data.gateway_id }}"
+      tags:
+        Name: qrious-igw1-pub-route
+        Group: "{{ tag_value }}"
+    register: pub-igw-route-data
+
+  - debug: msg="{{ pub-igw-route-data }}"
+
+  - name: Create new security group for qrious webserver
+    ec2_group:
+      name: qrious-webserver-sg1
+      description: Webserver Security Group Config
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      vpc_id: "{{ new_vpc_id }}"
+      region: "{{ aws_region }}"
+      rules:
+        - proto: tcp
+          ports:
+            - 80
+            - 443
+            - 8080
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          ports: 22
+          cidr_ip: 0.0.0.0/0
+      tags:
+        Group: "{{ tag_value }}"
+    register: webser-sg1-data
+
+- name: Create new EC2 key-pair for login
+   ec2_key:
+     aws_access_key: "{{ aws_access_key }}"
+     aws_secret_key: "{{ aws_secret_key }}"
+     name: qrious-webserver-keypair
+     region: "{{ aws_region }}"
+     tags:
+       Group: "{{ tag_value }}"
+   register: webser-keypair-data
+
+- name: Copy EC2 Private Key locally so it can be later on used to SSH into the instance
+  copy: content="{{ webser-keypair-data.key.private_key }}" dest=/tmp/key.ppk
+  when: webser-keypair-data.changed == true
+
+ - name: Create EC2 instance for webserver
+   ec2_instance:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    image_id: "{{ host_image }}"
+    instance_type: "{{ instance_type }}"
+    region: "{{ aws_region }}"
+    security_group: "{{ webser-sg1-data.group_id }}"
+    vpc_subnet_id: "{{ subnet1_data.subnet.id }}"
+    key_name: "{{ webser-keypair-data.key.name }}"
+    tags:
+      Name: qrious-webserver1
+      Group: "{{ tag_value }}"
+    exact_count: 1
+    wait: yes
