@@ -126,16 +126,16 @@
     when: webser_keypair_data.changed == true
 
   - name: Create EC2 instance for webserver
-    ec2_instance:
+    ec2:
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
-      image_id: "{{ host_image }}"
+      image: "{{ host_image }}"
       instance_type: "{{ instance_type }}"
       region: "{{ aws_region }}"
-      security_group: "{{ webser_sg1_data.group_id }}"
+      group_id: "{{ webser_sg1_data.group_id }}"
       vpc_subnet_id: "{{ subnet1_data.subnet.id }}"
       key_name: "{{ webser_keypair_data.key.name }}"
-      tags:
+      instance_tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
       count: "{{ host_count }}"
