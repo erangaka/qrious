@@ -149,16 +149,18 @@
 
   - debug: msg="{{ qrious_webserver1_data }}"
 
-  - name: Add new instance to host group
-    add_host:
-      hostname: "{{ item.public_ip }}"
-      groupname: ec2webservers
-    loop: "{{ qrious_webserver1_data.instances }}"
+  - debug: mas"{{ qrious_webserver1_data.instances[0].public_ip }}
 
-  - name: Wait for SSH port to become open before continue
-    delegate_to: "{{ item.private_ip }}"
-    wait_for_connection:
-      delay: 30
-      timeout: 300
-    loop: "{{ qrious_webserver1_data.instances }}"
-    register: check_ssh_result
+  # - name: Add new instance to host group
+  #   add_host:
+  #     hostname: "{{ item.public_ip }}"
+  #     groupname: ec2webservers
+  #   loop: "{{ qrious_webserver1_data.instances }}"
+  #
+  # - name: Wait for SSH port to become open before continue
+  #   delegate_to: "{{ item.private_ip }}"
+  #   wait_for_connection:
+  #     delay: 30
+  #     timeout: 300
+  #   loop: "{{ qrious_webserver1_data.instances }}"
+  #   register: check_ssh_result
