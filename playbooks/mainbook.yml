@@ -153,5 +153,5 @@
       state: started
     register: check_ssh_result
 
-  - debug: msg="EC2 instance ready - IP : {{ qrious_webserver1_data.instances.public_ip }}"
+  - debug: msg="EC2 instance ready - IP {{ qrious_webserver1_data.instances.public_ip }}"
     when: check_ssh_result.failed == false
