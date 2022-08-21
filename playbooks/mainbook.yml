@@ -145,22 +145,19 @@
         Group: "{{ tag_value }}"
       count: "{{ host_count }}"
       wait: yes
-      state: running
     register: qrious_webserver1_data
 
   - debug: msg="{{ qrious_webserver1_data }}"
 
   - name: Add new instance to host group
     add_host:
-      hostname: "{{ item.public_ip }}"
+      hostname: "{{ qrious_webserver1_data.instances.public_ip }}"
       groupname: ec2webservers
-    loop: "{{ qrious_webserver1_data.instances }}"
 
   - name: Wait for SSH port to become open before continue
     wait_for_connection:
-      delegate_to: "{{ item.public_ip }}"
+      delegate_to: "{{ qrious_webserver1_data.instances.public_ip }}"
       delay: 30
-    loop: "{{ qrious_webserver1_data.instances }}"
     register: check_ssh_result
 
   - debug: msg="EC2 instance ready - IP {{ qrious_webserver1_data.instances.public_ip }}"
