@@ -140,7 +140,6 @@
       group_id: "{{ webser_sg1_data.group_id }}"
       vpc_subnet_id: "{{ subnet1_data.subnet.id }}"
       key_name: "{{ webser_keypair_data.key.name }}"
-      assign_public_ip: yes
       instance_tags:
         Name: qrious-webserver1
         Group: "{{ tag_value }}"
