@@ -144,3 +144,12 @@
     register: qrious_webserver1_data
 
   - debug: msg="{{ qrious_webserver1_data }}"
+
+  - name: Wait for SSH port to become open before continue
+      wait_for:
+        host: {{ qrious_webserver1_data.instances.public_ip }}
+        port: 22
+        delay: 30
+        state: started
+
+  - debug: msg="EC2 instance ready - IP : {{ qrious_webserver1_data.instances.public_ip }}"
