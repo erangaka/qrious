@@ -172,10 +172,10 @@
   tasks:
   - name: Copy custom container Dockerfile to EC2
     copy:
-      src: ../Dockerfile
+      src: ./Dockerfile
       dest: /tmp/Dockerfile
       mode: '644'
-      remote_src: yes
+      remote_src: no
 
   - name: Build customer webserver container image
     docker_image:
