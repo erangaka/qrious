@@ -5,7 +5,7 @@
 
   vars:
     instance_type: t2.micro
-    host_image: ami-090fa75af13c156b4
+    host_image: ami-070650c005cce4203
     host_count: 1
     tag_value: qrious-test
 
