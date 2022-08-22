@@ -210,4 +210,4 @@
     with_items: "{{ groups['ec2webservers'] }}"
     register: check_webport_result
 
-  - debug: msg="{{ check_webport_result.stdout_lines }}"
+  - debug: msg="{{ check_webport_result }}"
