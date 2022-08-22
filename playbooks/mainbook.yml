@@ -146,7 +146,9 @@
     add_host:
       hostname: "{{ new_ec2_ip }}"
       groupname: ec2webservers
+      ansible_ssh_user: ubuntu
       ansible_ssh_private_key_file: keys/qrious_webser1_key.pem
+      ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
 
   - name: Check SSH port open for new EC2 instnace
     wait_for:
