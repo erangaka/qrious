@@ -160,6 +160,10 @@
 
   - debug: msg="New webserver created. IP - {{ new_ec2_ip }}"
 
+  - name: Pause for 5 minutes to build up EC2 instace
+      pause:
+      seconds: 300
+
 ## Play2 - Actions to deploy webserver on new EC2 node
 - name: Install docker on new EC2 instance
   hosts: ec2webservers
@@ -201,7 +205,7 @@
       module: wait_for
       host: "{{ new_ec2_ip }}"
       port: 80
-      delay: 10
+      delay: 60
       timeout: 120
     register: check_webport_result
 
