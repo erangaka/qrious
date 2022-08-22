@@ -1,3 +1,4 @@
+## Play1 - Provision AWS infrastructure for webserver
 - name: Automated deploy EC2 webserver
   hosts: localhost
   connection: local
@@ -145,6 +146,7 @@
     add_host:
       hostname: "{{ new_ec2_ip }}"
       groupname: ec2webservers
+      ansible_ssh_private_key_file: "{{ webser_keypair_data.key.name }}"
 
   - name: Check SSH port open for new EC2 instnace
     wait_for:
@@ -155,3 +157,12 @@
     register: check_ssh_result
 
   - debug: msg="New webserver created. IP - {{ new_ec2_ip }}"
+
+## Play2 - Actions to deploy webserver on new EC2 node
+- name: Install docker on new EC2 instance
+  hosts: ec2webservers
+  become: yes
+  gather_facts: False
+
+  roles:
+    - install_docker
