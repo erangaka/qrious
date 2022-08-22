@@ -168,3 +168,30 @@
 
   roles:
     - roles/install_docker
+
+  tasks:
+  - name: Copy custom container Dockerfile to EC2
+    copy:
+      src: ./Dockerfile
+      dest: /tmp/Dockerfile
+      mode: '644'
+
+  - name: Build customer webserver container image
+    docker_image:
+      name: qrious_webserver_image
+      build:
+        path: /tmp/Dockerfile
+      source: build
+      state: present
+
+  - name: Deploy customer webserver container
+    docker_container:
+      name: qrious_webserver
+      image: qrious_webserver_image
+      state: started
+      ports:
+        - 80:80
+        - 8080:8080
+        - 443:443
+        - 22:22
+    register: webserver_docker_data
