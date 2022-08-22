@@ -195,3 +195,14 @@
         - 8080:8080
         - 443:443
     register: webserver_docker_data
+
+  - name: Verify webserver port is open for outside
+    local_action:
+      module: wait_for
+      host: "{{ new_ec2_ip }}"
+      port: 80
+      delay: 10
+      timeout: 120
+    register: check_webport_result
+
+  - debug: msg="{{ check_webport_result.stdout_lines }}"
