@@ -112,13 +112,13 @@
 
   - name: Create a directory for store EC2 Private Key if it does not exist
     file:
-      path: keys
+      path: ../keys
       state: directory
 
   - name: Copy EC2 Private Key locally to SSH access
     copy:
       content: "{{ webser_keypair_data.key.private_key }}"
-      dest: keys/qrious_webser1_key.pem
+      dest: ../keys/qrious_webser1_key.pem
       mode: '400'
     when: webser_keypair_data.changed == true
 
