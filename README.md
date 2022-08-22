@@ -12,7 +12,15 @@ Create AWS IAM user with following access policies.
 >    - AmazonVPCFullAccess
 
  ## Execute ansible playbooks
- 1. Create AWS EC2 instance with docker
+ 1. Download code Repository
  ```
- ansible-playbook mainbook.yml --extra-vars "aws_access_key=<YOUR-ACCESS-KEY> aws_secret_key='<YOUR-SECRET-KEY>' aws_region=<Preferred-AWS-region>"
+ git clone https://github.com/erangaka/qrious.git
+ ```
+ 2. Change directory to git local repository path
+ ```
+ cd qrious
+ ```
+ 3. Create AWS EC2 instance with docker
+ ```
+ ansible-playbook playbooks/mainbook.yml --extra-vars "aws_access_key=<YOUR-ACCESS-KEY> aws_secret_key='<YOUR-SECRET-KEY>' aws_region=<Preferred-AWS-region>"
  ```

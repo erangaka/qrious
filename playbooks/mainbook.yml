@@ -167,4 +167,4 @@
   gather_facts: False
 
   roles:
-    - ../roles/install_docker
+    - roles/install_docker
