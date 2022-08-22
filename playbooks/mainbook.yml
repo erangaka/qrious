@@ -181,7 +181,7 @@
     docker_image:
       name: qrious_webserver_image
       build:
-        path: /tmp/Dockerfile
+        path: /tmp
       source: build
       state: present
 
