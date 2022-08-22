@@ -6,11 +6,10 @@
       - docker
       - docker-engine
     state: absent
-    
+
 - name: Install required system packages
   apt:
     pkg:
-      - apt-transport-https
       - ca-certificates
       - curl
       - software-properties-common
@@ -32,7 +31,11 @@
 
 - name: Update apt and install docker-ce
   apt:
-    name: docker-ce
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
     state: latest
     update_cache: true
 
