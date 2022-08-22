@@ -175,6 +175,7 @@
       src: ./Dockerfile
       dest: /tmp/Dockerfile
       mode: '644'
+      remote_src: yes
 
   - name: Build customer webserver container image
     docker_image:
