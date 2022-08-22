@@ -161,7 +161,7 @@
   - debug: msg="New webserver created. IP - {{ new_ec2_ip }}"
 
   - name: Pause for 5 minutes to build up EC2 instace
-      pause:
+    pause:
       seconds: 300
 
 ## Play2 - Actions to deploy webserver on new EC2 node
