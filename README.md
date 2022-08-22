@@ -2,12 +2,12 @@
 
 ## Prerequisites
 Please install following tools in your execution environment.
->1. Python and pip (tested verion python2.7)
+>1. Python and pip (Tested in version python2.7)
 >    - Follow instructions on https://docs.python-guide.org/starting/install/linux/
 >2. Ansible 2.9
 >    - Follow instructions on https://docs.ansible.com/ansible/2.9/installation_guide/intro_installation.html
 
-Create AWS IAM user with following access policies.
+Create AWS IAM user with following access policies to generate access keys.
 >    - AmazonEC2FullAccess
 >    - AmazonVPCFullAccess
 
@@ -24,3 +24,9 @@ Create AWS IAM user with following access policies.
  ```
  ansible-playbook playbooks/mainbook.yml --extra-vars "aws_access_key=<YOUR-ACCESS-KEY> aws_secret_key='<YOUR-SECRET-KEY>' aws_region=<Preferred-AWS-region>"
  ```
+
+## Connect to the webserver
+1. Find the public IP from ansible job logs
+```
+Search for "New webserver created"
+```
