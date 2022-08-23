@@ -36,7 +36,7 @@ https://<webserver-ip>
 ```
 
 ## How-to check docker container health status and resource usage
-1. Docker container health and resource usage is write to the following log file in EC2 instance.
+Docker container health and resource usage check script (containerlogs.py) is running as a systemd service in the background and writes to the following log file in EC2 instance.
 ```
 /tmp/webserver-stats.log
 ```
