@@ -225,8 +225,8 @@
       remote_src: no
 
   - name: Configure and start container health check script as systemd service
-      systemd:
-        name: container-check.timer
-        daemon_reload: yes
-        state: started
-        enabled: yes
+    systemd:
+      name: container-check.timer
+      daemon_reload: yes
+      state: started
+      enabled: yes
