@@ -31,6 +31,7 @@ def get_container_stat(container_name):
         return logentry
     except docker.errors.NotFound as dockerErr:
         print("ERROR: " + "{}".format(dockerErr.explanation))
+        sys.exit(1)
 
 
 if __name__ == "__main__":
