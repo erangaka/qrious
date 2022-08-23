@@ -216,3 +216,17 @@
       dest: /tmp/containerlogs.py
       mode: '755'
       remote_src: no
+
+  - name: Copy container health check script to EC2
+    copy:
+      src: ../files/
+      dest: /etc/systemd/system
+      mode: '644'
+      remote_src: no
+
+  - name: Configure and start container health check script as systemd service
+      systemd:
+        name: container-check.timer
+        daemon_reload: yes
+        state: started
+        enabled: yes

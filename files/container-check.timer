@@ -1,0 +1,10 @@
+[Unit]
+Description=Send jobs every 10seconds
+
+[Timer]
+OnBootSec=60s
+AccuracySec=1s
+OnUnitActiveSec=9s
+
+[Install]
+WantedBy=multi-user.target

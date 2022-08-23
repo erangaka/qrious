@@ -1,0 +1,12 @@
+[Unit]
+Description=Log qrious webserver container health and resource usage
+After==docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/tmp/containerlogs.py qrious_webserver
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
