@@ -38,7 +38,7 @@ if __name__ == "__main__":
     try:
         container_name = sys.argv[1]
         result = get_container_stat(container_name)
-        logfile_name = "webserver-stats.log"
+        logfile_name = "/tmp/webserver-stats.log"
         log_headers = "TIMESTAMP,NAME,STATUS,CPU%,MEM%"
 
         with open(logfile_name, 'a') as logfile:
